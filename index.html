@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Property Lookup</title>
-<!--     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script> 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>   -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,30 +38,33 @@
     <div class="container">
         <h1>Property Lookup</h1>
         <input type="text" id="propertyId" placeholder="Enter Property ID">
-        <button id ="fetchButton">Find Property</button>
+        <button id="fetchButton">Find Property</button>
         <div id="propertyDetails"></div>
     </div>
 
-    <script type="module>
-              import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-      import { getFirestore, collection, getDocs} from 'firebase/firestore/lite';
-      import { query, where } from 'firebase/firestore';
-          import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-        // Initialize Firebase (replace with your config)
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+
+        // Firebase configuration
         const firebaseConfig = {
-          apiKey: "AIzaSyBlrdxPlMZPP4jF3FVFmvfL-1EKjZ96V2c",
-          authDomain: "shivshakti-58ba7.firebaseapp.com",
-          projectId: "shivshakti-58ba7",
-          storageBucket: "shivshakti-58ba7.firebasestorage.app",
-          messagingSenderId: "545887405476",
-          appId: "1:545887405476:web:c29527ea76b79fb8fa2d31",
-          measurementId: "G-D4EJS61SFK"
+            apiKey: "AIzaSyBlrdxPlMZPP4jF3FVFmvfL-1EKjZ96V2c",
+            authDomain: "shivshakti-58ba7.firebaseapp.com",
+            projectId: "shivshakti-58ba7",
+            storageBucket: "shivshakti-58ba7.appspot.com",
+            messagingSenderId: "545887405476",
+            appId: "1:545887405476:web:c29527ea76b79fb8fa2d31",
+            measurementId: "G-D4EJS61SFK"
         };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch Property Details
         async function fetchPropertyDetails() {
-            console.log("Hello World");
-            const app = initializeApp(firebaseConfig);
-            const db = getfirestore(app);
-            const propertyId = document.getElementById('propertyId').value;
+            const propertyId = document.getElementById('propertyId').value.trim();
             const detailsContainer = document.getElementById('propertyDetails');
 
             if (!propertyId) {
@@ -74,25 +73,19 @@
             }
 
             try {
-                 // Reference the document in the Firestore collection
-        const docRef = doc(db, 'properties', propertyID);
+                const docRef = doc(db, 'properties', propertyId); // Correct propertyId usage
+                const docSnap = await getDoc(docRef);
 
-        // Fetch the document from Firestore
-        const docSnap = await getDoc(docRef);
-
-        // Check if the document exists
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-
-            // Display the property details
-            detailsContainer.innerHTML = `
-                <h2>Property Details</h2>
-                <p><strong>Address:</strong> ${data.address || 'N/A'}</p>
-                <p><strong>Price:</strong> $${data.price ? data.price.toLocaleString() : 'N/A'}</p>
-                <p><strong>Bedrooms:</strong> ${data.bedrooms || 'N/A'}</p>
-                <p><strong>Bathrooms:</strong> ${data.bathrooms || 'N/A'}</p>
-                <p><strong>Square Feet:</strong> ${data.squareFeet ? data.squareFeet.toLocaleString() : 'N/A'}</p>
-            `;    
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    detailsContainer.innerHTML = `
+                        <h2>Property Details</h2>
+                        <p><strong>Address:</strong> ${data.address || 'N/A'}</p>
+                        <p><strong>Price:</strong> $${data.price ? data.price.toLocaleString() : 'N/A'}</p>
+                        <p><strong>Bedrooms:</strong> ${data.bedrooms || 'N/A'}</p>
+                        <p><strong>Bathrooms:</strong> ${data.bathrooms || 'N/A'}</p>
+                        <p><strong>Square Feet:</strong> ${data.squareFeet ? data.squareFeet.toLocaleString() : 'N/A'}</p>
+                    `;
                 } else {
                     detailsContainer.innerHTML = '<p class="error">No property found with this ID</p>';
                 }
@@ -100,6 +93,8 @@
                 detailsContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
             }
         }
+
+        // Add Event Listener to Button
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('fetchButton');
             button.addEventListener('click', fetchPropertyDetails);
