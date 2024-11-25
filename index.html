@@ -23,8 +23,7 @@
           measurementId: "G-D4EJS61SFK"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getfirestore(app);
+        
     </script>
     <style>
         body {
@@ -61,13 +60,15 @@
     <div class="container">
         <h1>Property Lookup</h1>
         <input type="text" id="propertyId" placeholder="Enter Property ID">
-        <button onclick="fetchPropertyDetails(db)">Find Property</button>
+        <button onclick="fetchPropertyDetails()">Find Property</button>
         <div id="propertyDetails"></div>
     </div>
 
     <script>
         
-        async function fetchPropertyDetails(db) {
+        async function fetchPropertyDetails() {
+            const app = initializeApp(firebaseConfig);
+            const db = getfirestore(app);
             const propertyId = document.getElementById('propertyId').value;
             const detailsContainer = document.getElementById('propertyDetails');
 
