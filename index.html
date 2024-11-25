@@ -100,7 +100,10 @@
                 detailsContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
             }
         }
-        document.getElementById('fetchButton').addEventListener('click', fetchPropertyDetails);
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('fetchButton');
+            button.addEventListener('click', fetchPropertyDetails);
+        });
     </script>
 </body>
 </html>
