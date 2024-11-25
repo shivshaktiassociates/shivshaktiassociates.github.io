@@ -10,6 +10,19 @@
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        // Initialize Firebase (replace with your config)
+        const firebaseConfig = {
+          apiKey: "AIzaSyBlrdxPlMZPP4jF3FVFmvfL-1EKjZ96V2c",
+          authDomain: "shivshakti-58ba7.firebaseapp.com",
+          projectId: "shivshakti-58ba7",
+          storageBucket: "shivshakti-58ba7.firebasestorage.app",
+          messagingSenderId: "545887405476",
+          appId: "1:545887405476:web:c29527ea76b79fb8fa2d31",
+          measurementId: "G-D4EJS61SFK"
+        };
+
+        initializeApp(firebaseConfig);
+        const db = firestore();
     </script>
     <style>
         body {
@@ -51,19 +64,7 @@
     </div>
 
     <script>
-        // Initialize Firebase (replace with your config)
-        const firebaseConfig = {
-          apiKey: "AIzaSyBlrdxPlMZPP4jF3FVFmvfL-1EKjZ96V2c",
-          authDomain: "shivshakti-58ba7.firebaseapp.com",
-          projectId: "shivshakti-58ba7",
-          storageBucket: "shivshakti-58ba7.firebasestorage.app",
-          messagingSenderId: "545887405476",
-          appId: "1:545887405476:web:c29527ea76b79fb8fa2d31",
-          measurementId: "G-D4EJS61SFK"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        
 
         async function fetchPropertyDetails() {
             const propertyId = document.getElementById('propertyId').value;
