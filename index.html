@@ -62,6 +62,7 @@
           measurementId: "G-D4EJS61SFK"
         };
         async function fetchPropertyDetails() {
+            console.log("Hello World");
             const app = initializeApp(firebaseConfig);
             const db = getfirestore(app);
             const propertyId = document.getElementById('propertyId').value;
