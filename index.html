@@ -1,8 +1,90 @@
-<html>
-    <head>
-        <title>My First Web Page</title>
-    </head>
-    <body>
-        <h1>Welcome to my first web page!</h1>
-        <p>This is a paragraph of text.</p>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Property Lookup</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.1/firebase-app.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.1/firebase-firestore.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #propertyDetails {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Property Lookup</h1>
+        <input type="text" id="propertyId" placeholder="Enter Property ID">
+        <button onclick="fetchPropertyDetails()">Find Property</button>
+        <div id="propertyDetails"></div>
+    </div>
+
+    <script>
+        // Initialize Firebase (replace with your config)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        async function fetchPropertyDetails() {
+            const propertyId = document.getElementById('propertyId').value;
+            const detailsContainer = document.getElementById('propertyDetails');
+
+            if (!propertyId) {
+                detailsContainer.innerHTML = '<p class="error">Please enter a Property ID</p>';
+                return;
+            }
+
+            try {
+                const docRef = db.collection('properties').doc(propertyId);
+                const doc = await docRef.get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    detailsContainer.innerHTML = `
+                        <h2>Property Details</h2>
+                        <p><strong>Address:</strong> ${data.address}</p>
+                        <p><strong>Price:</strong> $${data.price.toLocaleString()}</p>
+                        <p><strong>Bedrooms:</strong> ${data.bedrooms}</p>
+                        <p><strong>Bathrooms:</strong> ${data.bathrooms}</p>
+                        <p><strong>Square Feet:</strong> ${data.squareFeet.toLocaleString()}</p>
+                    `;
+                } else {
+                    detailsContainer.innerHTML = '<p class="error">No property found with this ID</p>';
+                }
+            } catch (error) {
+                detailsContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
