@@ -42,7 +42,7 @@
     <div class="container">
         <h1>Property Lookup</h1>
         <input type="text" id="propertyId" placeholder="Enter Property ID">
-        <button onclick="fetchPropertyDetails()">Find Property</button>
+        <button id ="fetchButton">Find Property</button>
         <div id="propertyDetails"></div>
     </div>
 
@@ -74,7 +74,7 @@
 
             try {
                  // Reference the document in the Firestore collection
-        const docRef = doc(db, 'properties', propertyId);
+        const docRef = doc(db, 'properties', propertyID);
 
         // Fetch the document from Firestore
         const docSnap = await getDoc(docRef);
@@ -99,7 +99,7 @@
                 detailsContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
             }
         }
-        window.fetchPropertyDetails = fetchPropertyDetails;
+        document.getElementById('fetchButton').addEventListener('click', fetchPropertyDetails);
     </script>
 </body>
 </html>
