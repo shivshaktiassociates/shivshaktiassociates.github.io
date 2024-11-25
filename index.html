@@ -7,24 +7,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script> 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>   -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-      import { getFirestore, collection, getDocs} from 'firebase/firestore/lite';
-      import { query, where } from 'firebase/firestore';
-          import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-        // Initialize Firebase (replace with your config)
-        const firebaseConfig = {
-          apiKey: "AIzaSyBlrdxPlMZPP4jF3FVFmvfL-1EKjZ96V2c",
-          authDomain: "shivshakti-58ba7.firebaseapp.com",
-          projectId: "shivshakti-58ba7",
-          storageBucket: "shivshakti-58ba7.firebasestorage.app",
-          messagingSenderId: "545887405476",
-          appId: "1:545887405476:web:c29527ea76b79fb8fa2d31",
-          measurementId: "G-D4EJS61SFK"
-        };
-
-        
-    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,8 +46,21 @@
         <div id="propertyDetails"></div>
     </div>
 
-    <script>
-        
+    <script type="module>
+              import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import { getFirestore, collection, getDocs} from 'firebase/firestore/lite';
+      import { query, where } from 'firebase/firestore';
+          import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        // Initialize Firebase (replace with your config)
+        const firebaseConfig = {
+          apiKey: "AIzaSyBlrdxPlMZPP4jF3FVFmvfL-1EKjZ96V2c",
+          authDomain: "shivshakti-58ba7.firebaseapp.com",
+          projectId: "shivshakti-58ba7",
+          storageBucket: "shivshakti-58ba7.firebasestorage.app",
+          messagingSenderId: "545887405476",
+          appId: "1:545887405476:web:c29527ea76b79fb8fa2d31",
+          measurementId: "G-D4EJS61SFK"
+        };
         async function fetchPropertyDetails() {
             const app = initializeApp(firebaseConfig);
             const db = getfirestore(app);
