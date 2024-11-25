@@ -9,7 +9,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>   -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+      import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+      import { collection, getDocs, query, where } from 'firebase/firestore';
+          import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
         // Initialize Firebase (replace with your config)
         const firebaseConfig = {
           apiKey: "AIzaSyBlrdxPlMZPP4jF3FVFmvfL-1EKjZ96V2c",
@@ -21,8 +23,8 @@
           measurementId: "G-D4EJS61SFK"
         };
 
-        initializeApp(firebaseConfig);
-        const db = firestore();
+        const app = initializeApp(firebaseConfig);
+        const db = getfirestore(app);
     </script>
     <style>
         body {
@@ -59,14 +61,13 @@
     <div class="container">
         <h1>Property Lookup</h1>
         <input type="text" id="propertyId" placeholder="Enter Property ID">
-        <button onclick="fetchPropertyDetails()">Find Property</button>
+        <button onclick="fetchPropertyDetails(db)">Find Property</button>
         <div id="propertyDetails"></div>
     </div>
 
     <script>
         
-
-        async function fetchPropertyDetails() {
+        async function fetchPropertyDetails(db) {
             const propertyId = document.getElementById('propertyId').value;
             const detailsContainer = document.getElementById('propertyDetails');
 
@@ -76,19 +77,25 @@
             }
 
             try {
-                const docRef = db.collection('properties').doc(propertyId);
-                const doc = await docRef.get();
+                 // Reference the document in the Firestore collection
+        const docRef = doc(db, 'properties', propertyId);
 
-                if (doc.exists) {
-                    const data = doc.data();
-                    detailsContainer.innerHTML = `
-                        <h2>Property Details</h2>
-                        <p><strong>Address:</strong> ${data.address}</p>
-                        <p><strong>Price:</strong> $${data.price.toLocaleString()}</p>
-                        <p><strong>Bedrooms:</strong> ${data.bedrooms}</p>
-                        <p><strong>Bathrooms:</strong> ${data.bathrooms}</p>
-                        <p><strong>Square Feet:</strong> ${data.squareFeet.toLocaleString()}</p>
-                    `;
+        // Fetch the document from Firestore
+        const docSnap = await getDoc(docRef);
+
+        // Check if the document exists
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+
+            // Display the property details
+            detailsContainer.innerHTML = `
+                <h2>Property Details</h2>
+                <p><strong>Address:</strong> ${data.address || 'N/A'}</p>
+                <p><strong>Price:</strong> $${data.price ? data.price.toLocaleString() : 'N/A'}</p>
+                <p><strong>Bedrooms:</strong> ${data.bedrooms || 'N/A'}</p>
+                <p><strong>Bathrooms:</strong> ${data.bathrooms || 'N/A'}</p>
+                <p><strong>Square Feet:</strong> ${data.squareFeet ? data.squareFeet.toLocaleString() : 'N/A'}</p>
+            `;    
                 } else {
                     detailsContainer.innerHTML = '<p class="error">No property found with this ID</p>';
                 }
